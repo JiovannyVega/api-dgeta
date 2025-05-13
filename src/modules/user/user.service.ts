@@ -23,4 +23,9 @@ export class UserService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+
+  getById(id: string) {
+    // Simulación de búsqueda de usuario por ID
+    return { id, name: 'Test User' };
+  }
 }

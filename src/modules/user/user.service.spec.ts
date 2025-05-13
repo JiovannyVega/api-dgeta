@@ -15,4 +15,10 @@ describe('UserService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should return a user by ID', () => {
+    const id = '123';
+    const result = service.getById(id);
+    expect(result).toEqual({ id, name: 'Test User' });
+  });
 });
