@@ -24,7 +24,7 @@ export class UserService {
   }
 
   async findOne(id: number): Promise<User | null> {
-    return this.userRepository.findOne({ id });
+    return this.userRepository.findOne({ id }) || null; // Retornar null si no se encuentra
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
