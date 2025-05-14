@@ -3,506 +3,498 @@ create database dgeta;
 use dgeta;
 
 CREATE TABLE `roles` (
-    `id_rol` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre_rol` VARCHAR(50) NOT NULL,
-    `descripcion` TEXT2
+    `role_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `role_name` VARCHAR(50) NOT NULL,
+    `description` TEXT
 );
 
-CREATE TABLE `usuarios` (
-    `id_usuario` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_rol` INT NOT NULL,
+CREATE TABLE `users` (
+    `user_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `role_id` INT NOT NULL,
     `username` VARCHAR(50) UNIQUE NOT NULL,
     `password_hash` VARCHAR(255) NOT NULL,
     `email` VARCHAR(100) UNIQUE NOT NULL,
-    `fecha_registro` DATETIME DEFAULT(CURRENT_TIMESTAMP),
-    `ultimo_login` DATETIME,
-    `activo` BOOLEAN DEFAULT true
+    `registration_date` DATETIME DEFAULT(CURRENT_TIMESTAMP),
+    `last_login` DATETIME,
+    `active` BOOLEAN DEFAULT true
 );
 
-CREATE TABLE `estados` (
-    `id_estado` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre` VARCHAR(100) NOT NULL,
-    `clave` VARCHAR(10)
+CREATE TABLE `states` (
+    `state_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `code` VARCHAR(10)
 );
 
-CREATE TABLE `municipios` (
-    `id_municipio` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estado` INT NOT NULL,
-    `nombre` VARCHAR(100) NOT NULL
+CREATE TABLE `municipalities` (
+    `municipality_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `state_id` INT NOT NULL,
+    `name` VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE `informacion_personal` (
-    `id_info` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_usuario` INT UNIQUE NOT NULL,
+CREATE TABLE `personal_information` (
+    `info_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `user_id` INT UNIQUE NOT NULL,
     `curp` VARCHAR(18) UNIQUE,
-    `nombre` VARCHAR(50) NOT NULL,
-    `apellido_paterno` VARCHAR(50) NOT NULL,
-    `apellido_materno` VARCHAR(50),
-    `fecha_nacimiento` DATE,
-    `sexo` ENUM(
-        'Masculino',
-        'Femenino',
-        'Otro'
-    ),
-    `telefono` VARCHAR(15),
-    `celular` VARCHAR(15),
-    `direccion` TEXT,
-    `colonia` VARCHAR(100),
-    `id_municipio` INT,
-    `codigo_postal` VARCHAR(10),
-    `fotografia` VARCHAR(255)
+    `first_name` VARCHAR(50) NOT NULL,
+    `last_name` VARCHAR(50) NOT NULL,
+    `middle_name` VARCHAR(50),
+    `birth_date` DATE,
+    `gender` ENUM('Male', 'Female', 'Other'),
+    `phone` VARCHAR(15),
+    `mobile` VARCHAR(15),
+    `address` TEXT,
+    `neighborhood` VARCHAR(100),
+    `municipality_id` INT,
+    `postal_code` VARCHAR(10),
+    `photo` VARCHAR(255)
 );
 
-CREATE TABLE `especialidades` (
-    `id_especialidad` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre_especialidad` VARCHAR(100) NOT NULL,
-    `clave_especialidad` VARCHAR(20) UNIQUE NOT NULL,
-    `descripcion` TEXT
+CREATE TABLE `specialties` (
+    `specialty_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `specialty_name` VARCHAR(100) NOT NULL,
+    `specialty_code` VARCHAR(20) UNIQUE NOT NULL,
+    `description` TEXT
 );
 
-CREATE TABLE `grupos` (
-    `id_grupo` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre_grupo` VARCHAR(20) NOT NULL,
-    `turno` ENUM(
-        'Matutino',
-        'Vespertino',
-        'Nocturno'
-    ) NOT NULL,
-    `semestre` INT NOT NULL,
-    `id_especialidad` INT NOT NULL
+CREATE TABLE `groups` (
+    `group_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `group_name` VARCHAR(20) NOT NULL,
+    `shift` ENUM('Morning', 'Evening', 'Night') NOT NULL,
+    `semester` INT NOT NULL,
+    `specialty_id` INT NOT NULL
 );
 
-CREATE TABLE `estudiantes` (
-    `id_estudiante` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_usuario` INT UNIQUE NOT NULL,
-    `id_grupo` INT,
-    `numero_control` VARCHAR(20) UNIQUE NOT NULL,
-    `promedio_secundaria` DECIMAL(3, 1),
-    `escuela_procedencia` VARCHAR(100),
-    `estatus` ENUM(
-        'Activo',
-        'Inactivo',
-        'Egresado',
-        'Baja'
-    ) DEFAULT 'Activo'
+CREATE TABLE `students` (
+    `student_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `user_id` INT UNIQUE NOT NULL,
+    `group_id` INT,
+    `control_number` VARCHAR(20) UNIQUE NOT NULL,
+    `secondary_average` DECIMAL(3, 1),
+    `previous_school` VARCHAR(100),
+    `status` ENUM(
+        'Active',
+        'Inactive',
+        'Graduated',
+        'Dropped'
+    ) DEFAULT 'Active'
 );
 
-CREATE TABLE `docentes` (
-    `id_docente` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_usuario` INT UNIQUE NOT NULL,
-    `numero_empleado` VARCHAR(20) UNIQUE NOT NULL,
-    `grado_academico` VARCHAR(50),
-    `especialidad` VARCHAR(100),
-    `estatus` ENUM('Activo', 'Inactivo') DEFAULT 'Activo'
+CREATE TABLE `teachers` (
+    `teacher_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `user_id` INT UNIQUE NOT NULL,
+    `employee_number` VARCHAR(20) UNIQUE NOT NULL,
+    `academic_degree` VARCHAR(50),
+    `specialty` VARCHAR(100),
+    `status` ENUM('Active', 'Inactive') DEFAULT 'Active'
 );
 
-CREATE TABLE `materias` (
-    `id_materia` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre_materia` VARCHAR(100) NOT NULL,
-    `clave_materia` VARCHAR(20) UNIQUE NOT NULL,
-    `semestre` INT NOT NULL,
-    `horas_teoricas` INT,
-    `horas_practicas` INT,
-    `id_especialidad` INT
+CREATE TABLE `subjects` (
+    `subject_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `subject_name` VARCHAR(100) NOT NULL,
+    `subject_code` VARCHAR(20) UNIQUE NOT NULL,
+    `semester` INT NOT NULL,
+    `theory_hours` INT,
+    `practice_hours` INT,
+    `specialty_id` INT
 );
 
-CREATE TABLE `grupos_materias` (
-    `id_grupo_materia` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_grupo` INT NOT NULL,
-    `id_materia` INT NOT NULL,
-    `id_docente` INT NOT NULL,
-    `periodo` VARCHAR(20) NOT NULL
+CREATE TABLE `group_subjects` (
+    `group_subject_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `group_id` INT NOT NULL,
+    `subject_id` INT NOT NULL,
+    `teacher_id` INT NOT NULL,
+    `period` VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE `calificaciones` (
-    `id_calificacion` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `id_grupo_materia` INT NOT NULL,
-    `parcial_1` DECIMAL(4, 2),
-    `parcial_2` DECIMAL(4, 2),
-    `parcial_3` DECIMAL(4, 2),
-    `calificacion_final` DECIMAL(4, 2),
-    `fecha_actualizacion` TIMESTAMP DEFAULT(CURRENT_TIMESTAMP)
+CREATE TABLE `grades` (
+    `grade_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `group_subject_id` INT NOT NULL,
+    `partial_1` DECIMAL(4, 2),
+    `partial_2` DECIMAL(4, 2),
+    `partial_3` DECIMAL(4, 2),
+    `final_grade` DECIMAL(4, 2),
+    `update_date` TIMESTAMP DEFAULT(CURRENT_TIMESTAMP)
 );
 
-CREATE TABLE `tutorias` (
-    `id_tutoria` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_docente` INT NOT NULL,
-    `id_grupo` INT NOT NULL,
-    `periodo` VARCHAR(20) NOT NULL
+CREATE TABLE `tutoring` (
+    `tutoring_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `teacher_id` INT NOT NULL,
+    `group_id` INT NOT NULL,
+    `period` VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE `tipos_incidencia` (
-    `id_tipo_incidencia` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre` VARCHAR(50) NOT NULL,
-    `descripcion` TEXT
+CREATE TABLE `incident_types` (
+    `incident_type_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `description` TEXT
 );
 
-CREATE TABLE `incidencias` (
-    `id_incidencia` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `id_docente_reporta` INT NOT NULL,
-    `id_tipo_incidencia` INT,
-    `fecha_incidencia` DATE NOT NULL,
-    `fecha_reporte` DATETIME DEFAULT(CURRENT_TIMESTAMP),
-    `especialidad` VARCHAR(100),
-    `semestre_grupo` VARCHAR(50),
-    `descripcion` TEXT NOT NULL,
-    `medidas_tomadas` TEXT,
-    `compromisos_estudiante` TEXT,
-    `estatus` ENUM(
-        'Reportado',
-        'En seguimiento',
-        'Resuelto'
-    ) DEFAULT 'Reportado'
+CREATE TABLE `incidents` (
+    `incident_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `reporting_teacher_id` INT NOT NULL,
+    `incident_type_id` INT,
+    `incident_date` DATE NOT NULL,
+    `report_date` DATETIME DEFAULT(CURRENT_TIMESTAMP),
+    `specialty` VARCHAR(100),
+    `group_semester` VARCHAR(50),
+    `description` TEXT NOT NULL,
+    `actions_taken` TEXT,
+    `student_commitments` TEXT,
+    `status` ENUM(
+        'Reported',
+        'In progress',
+        'Resolved'
+    ) DEFAULT 'Reported'
 );
 
-CREATE TABLE `tutorias_individuales` (
-    `id_tutoria_ind` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_tutoria` INT NOT NULL,
-    `id_estudiante` INT NOT NULL,
-    `fecha_tutoria` DATETIME NOT NULL,
-    `situacion_presentada` TEXT NOT NULL,
-    `atencion_otorgada` TEXT NOT NULL,
-    `resultados` TEXT,
-    `observaciones` TEXT,
-    `canalizado` BOOLEAN DEFAULT false,
-    `instancia_canalizacion` VARCHAR(100)
+CREATE TABLE `individual_tutoring` (
+    `individual_tutoring_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `tutoring_id` INT NOT NULL,
+    `student_id` INT NOT NULL,
+    `tutoring_date` DATETIME NOT NULL,
+    `presented_situation` TEXT NOT NULL,
+    `provided_attention` TEXT NOT NULL,
+    `results` TEXT,
+    `observations` TEXT,
+    `referred` BOOLEAN DEFAULT false,
+    `referral_instance` VARCHAR(100)
 );
 
-CREATE TABLE `cuestionarios` (
-    `id_cuestionario` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre` VARCHAR(100) NOT NULL,
-    `descripcion` TEXT,
+CREATE TABLE `questionnaires` (
+    `questionnaire_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `description` TEXT,
     `version` VARCHAR(20),
-    `fecha_creacion` DATE
+    `creation_date` DATE
 );
 
-CREATE TABLE `preguntas` (
-    `id_pregunta` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_cuestionario` INT NOT NULL,
-    `texto_pregunta` TEXT NOT NULL,
-    `tipo_respuesta` ENUM(
+CREATE TABLE `questions` (
+    `question_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `questionnaire_id` INT NOT NULL,
+    `question_text` TEXT NOT NULL,
+    `answer_type` ENUM(
         'BOOLEAN',
-        'NUMERICO',
-        'TEXTO',
-        'OPCIONES'
+        'NUMERIC',
+        'TEXT',
+        'OPTIONS'
     ) NOT NULL,
-    `es_riesgo` BOOLEAN DEFAULT false,
-    `orden` INT NOT NULL
+    `is_risk` BOOLEAN DEFAULT false,
+    `order` INT NOT NULL
 );
 
-CREATE TABLE `respuestas` (
-    `id_respuesta` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_pregunta` INT NOT NULL,
-    `id_estudiante` INT NOT NULL,
-    `valor_booleano` BOOLEAN,
-    `valor_numerico` DECIMAL(5, 2),
-    `valor_texto` TEXT,
-    `fecha_respuesta` DATETIME DEFAULT(CURRENT_TIMESTAMP)
+CREATE TABLE `answers` (
+    `answer_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `question_id` INT NOT NULL,
+    `student_id` INT NOT NULL,
+    `boolean_value` BOOLEAN,
+    `numeric_value` DECIMAL(5, 2),
+    `text_value` TEXT,
+    `answer_date` DATETIME DEFAULT(CURRENT_TIMESTAMP)
 );
 
-CREATE TABLE `resultados_cuestionarios` (
-    `id_resultado` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_cuestionario` INT NOT NULL,
-    `id_estudiante` INT NOT NULL,
-    `fecha_aplicacion` DATE NOT NULL,
-    `puntaje_total` INT,
-    `nivel_riesgo` VARCHAR(50),
-    `observaciones` TEXT
+CREATE TABLE `questionnaire_results` (
+    `result_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `questionnaire_id` INT NOT NULL,
+    `student_id` INT NOT NULL,
+    `application_date` DATE NOT NULL,
+    `total_score` INT,
+    `risk_level` VARCHAR(50),
+    `observations` TEXT
 );
 
-CREATE TABLE `categorias_estilo_aprendizaje` (
-    `id_categoria` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre` VARCHAR(50) NOT NULL,
-    `descripcion` TEXT
+CREATE TABLE `learning_style_categories` (
+    `category_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(50) NOT NULL,
+    `description` TEXT
 );
 
-CREATE TABLE `estilos_aprendizaje` (
-    `id_estilo` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `fecha_aplicacion` DATE NOT NULL
+CREATE TABLE `learning_styles` (
+    `style_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `application_date` DATE NOT NULL
 );
 
-CREATE TABLE `resultados_estilos` (
-    `id_resultado` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estilo` INT NOT NULL,
-    `id_categoria` INT NOT NULL,
-    `puntaje` INT NOT NULL
+CREATE TABLE `style_results` (
+    `result_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `style_id` INT NOT NULL,
+    `category_id` INT NOT NULL,
+    `score` INT NOT NULL
 );
 
-CREATE TABLE `evaluaciones_tutoria` (
-    `id_evaluacion` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `id_tutoria` INT NOT NULL,
-    `fecha_evaluacion` DATE NOT NULL,
-    `identificacion_tutor` BOOLEAN NOT NULL,
-    `atencion_cordial` BOOLEAN NOT NULL,
-    `resolucion_dudas` BOOLEAN NOT NULL,
-    `tiempo_suficiente` BOOLEAN,
-    `sesiones_recibidas` INT,
-    `tutorias_individuales` BOOLEAN,
-    `visitas_domiciliarias` BOOLEAN,
-    `canalizaciones` BOOLEAN,
-    `apoyo_academico` BOOLEAN,
-    `orientacion_bachillerato` BOOLEAN,
-    `informacion_becas` BOOLEAN,
-    `ambiente_respetuoso` BOOLEAN,
-    `impacto_positivo` BOOLEAN,
-    `importancia_tutorias` BOOLEAN,
-    `sugerencias` TEXT
+CREATE TABLE `tutoring_evaluations` (
+    `evaluation_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `tutoring_id` INT NOT NULL,
+    `evaluation_date` DATE NOT NULL,
+    `tutor_identification` BOOLEAN NOT NULL,
+    `cordial_attention` BOOLEAN NOT NULL,
+    `doubt_resolution` BOOLEAN NOT NULL,
+    `enough_time` BOOLEAN,
+    `received_sessions` INT,
+    `individual_tutoring` BOOLEAN,
+    `home_visits` BOOLEAN,
+    `referrals` BOOLEAN,
+    `academic_support` BOOLEAN,
+    `high_school_guidance` BOOLEAN,
+    `scholarship_information` BOOLEAN,
+    `respectful_environment` BOOLEAN,
+    `positive_impact` BOOLEAN,
+    `tutoring_importance` BOOLEAN,
+    `suggestions` TEXT
 );
 
-CREATE TABLE `autoevaluaciones` (
-    `id_autoevaluacion` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `fecha_autoevaluacion` DATE NOT NULL,
-    `metas_logradas` TEXT,
-    `factores_exito` TEXT,
-    `factores_fracaso` TEXT,
-    `problemas` TEXT,
-    `desempenio_academico` ENUM(
-        'Excelente',
-        'Bueno',
-        'Regular',
-        'Deficiente'
+CREATE TABLE `self_evaluations` (
+    `self_evaluation_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `self_evaluation_date` DATE NOT NULL,
+    `achieved_goals` TEXT,
+    `success_factors` TEXT,
+    `failure_factors` TEXT,
+    `problems` TEXT,
+    `academic_performance` ENUM(
+        'Excellent',
+        'Good',
+        'Average',
+        'Poor'
     ),
-    `evaluacion_tutor` TEXT,
-    `sugerencias_tutor` TEXT,
-    `sentimiento_conclusion` TEXT
+    `tutor_evaluation` TEXT,
+    `tutor_suggestions` TEXT,
+    `conclusion_feeling` TEXT
 );
 
-CREATE TABLE `familiares` (
-    `id_familiar` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `nombre` VARCHAR(100) NOT NULL,
-    `parentesco` VARCHAR(50) NOT NULL,
-    `telefono` VARCHAR(15),
+CREATE TABLE `family_members` (
+    `family_member_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `name` VARCHAR(100) NOT NULL,
+    `relationship` VARCHAR(50) NOT NULL,
+    `phone` VARCHAR(15),
     `email` VARCHAR(100),
-    `direccion` TEXT,
-    `es_tutor` BOOLEAN DEFAULT false,
-    `vive_con_estudiante` BOOLEAN DEFAULT true
+    `address` TEXT,
+    `is_guardian` BOOLEAN DEFAULT false,
+    `lives_with_student` BOOLEAN DEFAULT true
 );
 
-CREATE TABLE `salud_estudiante` (
-    `id_salud` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `alergias` TEXT,
-    `enfermedades_cronicas` TEXT,
-    `medicamentos` TEXT,
-    `discapacidad` TEXT,
-    `tratamiento_psicologico` BOOLEAN,
-    `servicio_salud` VARCHAR(100),
-    `tipo_sangre` VARCHAR(10)
+CREATE TABLE `student_health` (
+    `health_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `allergies` TEXT,
+    `chronic_diseases` TEXT,
+    `medications` TEXT,
+    `disability` TEXT,
+    `psychological_treatment` BOOLEAN,
+    `health_service` VARCHAR(100),
+    `blood_type` VARCHAR(10)
 );
 
-CREATE TABLE `asistencias` (
-    `id_asistencia` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `id_grupo_materia` INT NOT NULL,
-    `fecha` DATE NOT NULL,
-    `asistio` BOOLEAN DEFAULT false,
-    `justificacion` TEXT
+CREATE TABLE `attendance` (
+    `attendance_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `group_subject_id` INT NOT NULL,
+    `date` DATE NOT NULL,
+    `attended` BOOLEAN DEFAULT false,
+    `justification` TEXT
 );
 
-CREATE TABLE `documentos_estudiante` (
-    `id_documento` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `tipo_documento` VARCHAR(50) NOT NULL,
-    `nombre_documento` VARCHAR(100) NOT NULL,
-    `ruta_archivo` VARCHAR(255) NOT NULL,
-    `fecha_subida` DATETIME DEFAULT(CURRENT_TIMESTAMP)
+CREATE TABLE `student_documents` (
+    `document_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `document_type` VARCHAR(50) NOT NULL,
+    `document_name` VARCHAR(100) NOT NULL,
+    `file_path` VARCHAR(255) NOT NULL,
+    `upload_date` DATETIME DEFAULT(CURRENT_TIMESTAMP)
 );
 
-CREATE TABLE `historial_academico` (
-    `id_historial` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `semestre` INT NOT NULL,
-    `promedio` DECIMAL(4, 2),
-    `materias_aprobadas` INT,
-    `materias_reprobadas` INT,
-    `observaciones` TEXT
+CREATE TABLE `academic_history` (
+    `history_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `semester` INT NOT NULL,
+    `average` DECIMAL(4, 2),
+    `approved_subjects` INT,
+    `failed_subjects` INT,
+    `observations` TEXT
 );
 
-CREATE TABLE `canalizaciones` (
-    `id_canalizacion` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `id_tutor` INT NOT NULL,
-    `fecha_canalizacion` DATE NOT NULL,
-    `instancia` VARCHAR(100) NOT NULL,
-    `situacion_presentada` TEXT NOT NULL,
-    `motivo_canalizacion` TEXT NOT NULL,
-    `resultados` TEXT,
-    `observaciones` TEXT
+CREATE TABLE `referrals` (
+    `referral_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `tutor_id` INT NOT NULL,
+    `referral_date` DATE NOT NULL,
+    `instance` VARCHAR(100) NOT NULL,
+    `presented_situation` TEXT NOT NULL,
+    `referral_reason` TEXT NOT NULL,
+    `results` TEXT,
+    `observations` TEXT
 );
 
-CREATE TABLE `seguimiento_academico` (
-    `id_seguimiento` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `semestre` INT NOT NULL,
-    `acciones_emprender` TEXT,
-    `fecha_seguimiento` DATE NOT NULL,
-    `id_tutor` INT NOT NULL
+CREATE TABLE `academic_followup` (
+    `followup_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `semester` INT NOT NULL,
+    `actions_to_take` TEXT,
+    `followup_date` DATE NOT NULL,
+    `tutor_id` INT NOT NULL
 );
 
-CREATE TABLE `actividades_extracurriculares` (
-    `id_actividad` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_estudiante` INT NOT NULL,
-    `nombre_actividad` VARCHAR(100) NOT NULL,
-    `tipo_actividad` VARCHAR(50) NOT NULL,
-    `periodo` VARCHAR(20) NOT NULL,
-    `horas` INT,
-    `reconocimientos` TEXT
+CREATE TABLE `extracurricular_activities` (
+    `activity_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `student_id` INT NOT NULL,
+    `activity_name` VARCHAR(100) NOT NULL,
+    `activity_type` VARCHAR(50) NOT NULL,
+    `period` VARCHAR(20) NOT NULL,
+    `hours` INT,
+    `recognitions` TEXT
 );
 
-CREATE TABLE `mensajes` (
-    `id_mensaje` INT PRIMARY KEY AUTO_INCREMENT,
-    `id_remitente` INT NOT NULL,
-    `id_destinatario` INT NOT NULL,
-    `asunto` VARCHAR(100) NOT NULL,
-    `contenido` TEXT NOT NULL,
-    `fecha_envio` DATETIME DEFAULT(CURRENT_TIMESTAMP),
-    `leido` BOOLEAN DEFAULT false
+CREATE TABLE `messages` (
+    `message_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `sender_id` INT NOT NULL,
+    `receiver_id` INT NOT NULL,
+    `subject` VARCHAR(100) NOT NULL,
+    `content` TEXT NOT NULL,
+    `sent_date` DATETIME DEFAULT(CURRENT_TIMESTAMP),
+    `read` BOOLEAN DEFAULT false
 );
 
-CREATE TABLE `configuraciones` (
-    `id_config` INT PRIMARY KEY AUTO_INCREMENT,
-    `nombre_config` VARCHAR(50) UNIQUE NOT NULL,
-    `valor_config` TEXT,
-    `descripcion` TEXT
+CREATE TABLE `settings` (
+    `setting_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `setting_name` VARCHAR(50) UNIQUE NOT NULL,
+    `setting_value` TEXT,
+    `description` TEXT
 );
 
-ALTER TABLE `usuarios`
-ADD FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
+ALTER TABLE `users`
+ADD FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`);
 
-ALTER TABLE `municipios`
-ADD FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`);
+ALTER TABLE `municipalities`
+ADD FOREIGN KEY (`state_id`) REFERENCES `states` (`state_id`);
 
-ALTER TABLE `informacion_personal`
-ADD FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+ALTER TABLE `personal_information`
+ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
-ALTER TABLE `informacion_personal`
-ADD FOREIGN KEY (`id_municipio`) REFERENCES `municipios` (`id_municipio`);
+ALTER TABLE `personal_information`
+ADD FOREIGN KEY (`municipality_id`) REFERENCES `municipalities` (`municipality_id`);
 
-ALTER TABLE `grupos`
-ADD FOREIGN KEY (`id_especialidad`) REFERENCES `especialidades` (`id_especialidad`);
+ALTER TABLE `groups`
+ADD FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`);
 
-ALTER TABLE `estudiantes`
-ADD FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+ALTER TABLE `students`
+ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
-ALTER TABLE `estudiantes`
-ADD FOREIGN KEY (`id_grupo`) REFERENCES `grupos` (`id_grupo`);
+ALTER TABLE `students`
+ADD FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`);
 
-ALTER TABLE `docentes`
-ADD FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+ALTER TABLE `teachers`
+ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
-ALTER TABLE `materias`
-ADD FOREIGN KEY (`id_especialidad`) REFERENCES `especialidades` (`id_especialidad`);
+ALTER TABLE `subjects`
+ADD FOREIGN KEY (`specialty_id`) REFERENCES `specialties` (`specialty_id`);
 
-ALTER TABLE `grupos_materias`
-ADD FOREIGN KEY (`id_grupo`) REFERENCES `grupos` (`id_grupo`);
+ALTER TABLE `group_subjects`
+ADD FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`);
 
-ALTER TABLE `grupos_materias`
-ADD FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`);
+ALTER TABLE `group_subjects`
+ADD FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`subject_id`);
 
-ALTER TABLE `grupos_materias`
-ADD FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`);
+ALTER TABLE `group_subjects`
+ADD FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`teacher_id`);
 
-ALTER TABLE `calificaciones`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `grades`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `calificaciones`
-ADD FOREIGN KEY (`id_grupo_materia`) REFERENCES `grupos_materias` (`id_grupo_materia`);
+ALTER TABLE `grades`
+ADD FOREIGN KEY (`group_subject_id`) REFERENCES `group_subjects` (`group_subject_id`);
 
-ALTER TABLE `tutorias`
-ADD FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`);
+ALTER TABLE `tutoring`
+ADD FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`teacher_id`);
 
-ALTER TABLE `tutorias`
-ADD FOREIGN KEY (`id_grupo`) REFERENCES `grupos` (`id_grupo`);
+ALTER TABLE `tutoring`
+ADD FOREIGN KEY (`group_id`) REFERENCES `groups` (`group_id`);
 
-ALTER TABLE `incidencias`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `incidents`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `incidencias`
-ADD FOREIGN KEY (`id_docente_reporta`) REFERENCES `docentes` (`id_docente`);
+ALTER TABLE `incidents`
+ADD FOREIGN KEY (`reporting_teacher_id`) REFERENCES `teachers` (`teacher_id`);
 
-ALTER TABLE `incidencias`
-ADD FOREIGN KEY (`id_tipo_incidencia`) REFERENCES `tipos_incidencia` (`id_tipo_incidencia`);
+ALTER TABLE `incidents`
+ADD FOREIGN KEY (`incident_type_id`) REFERENCES `incident_types` (`incident_type_id`);
 
-ALTER TABLE `tutorias_individuales`
-ADD FOREIGN KEY (`id_tutoria`) REFERENCES `tutorias` (`id_tutoria`);
+ALTER TABLE `individual_tutoring`
+ADD FOREIGN KEY (`tutoring_id`) REFERENCES `tutoring` (`tutoring_id`);
 
-ALTER TABLE `tutorias_individuales`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `individual_tutoring`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `preguntas`
-ADD FOREIGN KEY (`id_cuestionario`) REFERENCES `cuestionarios` (`id_cuestionario`);
+ALTER TABLE `questions`
+ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaires` (`questionnaire_id`);
 
-ALTER TABLE `respuestas`
-ADD FOREIGN KEY (`id_pregunta`) REFERENCES `preguntas` (`id_pregunta`);
+ALTER TABLE `answers`
+ADD FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`);
 
-ALTER TABLE `respuestas`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `answers`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `resultados_cuestionarios`
-ADD FOREIGN KEY (`id_cuestionario`) REFERENCES `cuestionarios` (`id_cuestionario`);
+ALTER TABLE `questionnaire_results`
+ADD FOREIGN KEY (`questionnaire_id`) REFERENCES `questionnaires` (`questionnaire_id`);
 
-ALTER TABLE `resultados_cuestionarios`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `questionnaire_results`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `estilos_aprendizaje`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `learning_styles`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `resultados_estilos`
-ADD FOREIGN KEY (`id_estilo`) REFERENCES `estilos_aprendizaje` (`id_estilo`);
+ALTER TABLE `style_results`
+ADD FOREIGN KEY (`style_id`) REFERENCES `learning_styles` (`style_id`);
 
-ALTER TABLE `resultados_estilos`
-ADD FOREIGN KEY (`id_categoria`) REFERENCES `categorias_estilo_aprendizaje` (`id_categoria`);
+ALTER TABLE `style_results`
+ADD FOREIGN KEY (`category_id`) REFERENCES `learning_style_categories` (`category_id`);
 
-ALTER TABLE `evaluaciones_tutoria`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `tutoring_evaluations`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `evaluaciones_tutoria`
-ADD FOREIGN KEY (`id_tutoria`) REFERENCES `tutorias` (`id_tutoria`);
+ALTER TABLE `tutoring_evaluations`
+ADD FOREIGN KEY (`tutoring_id`) REFERENCES `tutoring` (`tutoring_id`);
 
-ALTER TABLE `autoevaluaciones`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `self_evaluations`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `familiares`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `family_members`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `salud_estudiante`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `student_health`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `asistencias`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `attendance`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `asistencias`
-ADD FOREIGN KEY (`id_grupo_materia`) REFERENCES `grupos_materias` (`id_grupo_materia`);
+ALTER TABLE `attendance`
+ADD FOREIGN KEY (`group_subject_id`) REFERENCES `group_subjects` (`group_subject_id`);
 
-ALTER TABLE `documentos_estudiante`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `student_documents`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `historial_academico`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `academic_history`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `canalizaciones`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `referrals`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `canalizaciones`
-ADD FOREIGN KEY (`id_tutor`) REFERENCES `docentes` (`id_docente`);
+ALTER TABLE `referrals`
+ADD FOREIGN KEY (`tutor_id`) REFERENCES `teachers` (`teacher_id`);
 
-ALTER TABLE `seguimiento_academico`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `academic_followup`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `seguimiento_academico`
-ADD FOREIGN KEY (`id_tutor`) REFERENCES `docentes` (`id_docente`);
+ALTER TABLE `academic_followup`
+ADD FOREIGN KEY (`tutor_id`) REFERENCES `teachers` (`teacher_id`);
 
-ALTER TABLE `actividades_extracurriculares`
-ADD FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`);
+ALTER TABLE `extracurricular_activities`
+ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`student_id`);
 
-ALTER TABLE `mensajes`
-ADD FOREIGN KEY (`id_remitente`) REFERENCES `usuarios` (`id_usuario`);
+ALTER TABLE `messages`
+ADD FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`);
 
-ALTER TABLE `mensajes`
-ADD FOREIGN KEY (`id_destinatario`) REFERENCES `usuarios` (`id_usuario`);
+ALTER TABLE `messages`
+ADD FOREIGN KEY (`receiver_id`) REFERENCES `users` (`user_id`);
