@@ -1,26 +1,26 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from './user.controller';
-import { UserService } from './user.service';
+import { RoleController } from './role.controller';
+import { RoleService } from './role.service';
 import { EntityManager } from '@mikro-orm/core'; // <-- Correct import
 
-describe('UserController', () => {
-  let controller: UserController;
+describe('RoleController', () => {
+  let controller: RoleController;
 
   // Mock classes
-  const mockUserRepository = {};
+  const mockRoleRepository = {};
   const mockEntityManager = {};
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UserController],
+      controllers: [RoleController],
       providers: [
-        UserService,
-        { provide: 'UserRepository', useValue: mockUserRepository },
+        RoleService,
+        { provide: 'RoleRepository', useValue: mockRoleRepository },
         { provide: EntityManager, useValue: mockEntityManager }, // Use class, not string
       ],
     }).compile();
 
-    controller = module.get<UserController>(UserController);
+    controller = module.get<RoleController>(RoleController);
   });
 
   it('should be defined', () => {

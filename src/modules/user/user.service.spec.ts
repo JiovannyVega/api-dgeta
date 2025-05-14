@@ -1,12 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
+import { EntityManager } from '@mikro-orm/core'; // <-- Correct import
 
 describe('UserService', () => {
   let service: UserService;
 
+  // Mock classes
+  const mockUserRepository = {};
+  const mockEntityManager = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [UserService],
+      providers: [
+        UserService,
+        { provide: 'UserRepository', useValue: mockUserRepository },
+        { provide: EntityManager, useValue: mockEntityManager }, // Use class, not string
+      ],
     }).compile();
 
     service = module.get<UserService>(UserService);
