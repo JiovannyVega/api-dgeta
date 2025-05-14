@@ -16,9 +16,12 @@ describe('UserService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should return a user by ID', () => {
-    const id = '123';
-    const result = service.getById(id);
-    expect(result).toEqual({ id, name: 'Test User' });
+  it('should return a user by ID', async () => {
+    const id = 123;
+    const mockUser = { id, name: 'Test User', email: 'test@example.com', createdAt: new Date() };
+    jest.spyOn(service, 'findOne').mockResolvedValue(mockUser); // Mock del método findOne
+
+    const result = await service.findOne(id);
+    expect(result).toEqual(mockUser);
   });
 });
