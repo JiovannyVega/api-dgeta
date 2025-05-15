@@ -27,6 +27,10 @@ export class UserService {
     return this.userRepository.findOne({ user_id: id }) || null;
   }
 
+  async findByUsername(username: string): Promise<User | null> {
+    return this.userRepository.findOne({ username }) || null;
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
     const user = await this.findOne(id);
     if (!user) return null;

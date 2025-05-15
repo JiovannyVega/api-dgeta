@@ -5,12 +5,14 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { mikroOrmConfig } from './config/database.config';
 import { RoleModule } from './modules/role/role.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
     MikroOrmModule.forRoot(mikroOrmConfig),
     UserModule,
     RoleModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
