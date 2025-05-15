@@ -3,14 +3,26 @@ import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 @Entity({ tableName: 'users' })
 export class User {
     @PrimaryKey()
-    id!: number;
+    user_id?: number;
 
     @Property()
-    name!: string;
+    role_id!: number;
+
+    @Property()
+    username!: string;
+
+    @Property()
+    password_hash!: string;
 
     @Property()
     email!: string;
 
-    @Property()
-    createdAt: Date = new Date();
+    @Property({ onCreate: () => new Date() })
+    registration_date?: Date;
+
+    @Property({ nullable: true })
+    last_login?: Date;
+
+    @Property({ default: true })
+    active: boolean = true;
 }

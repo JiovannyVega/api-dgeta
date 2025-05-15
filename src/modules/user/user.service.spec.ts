@@ -27,8 +27,17 @@ describe('UserService', () => {
 
   it('should return a user by ID', async () => {
     const id = 123;
-    const mockUser = { id, name: 'Test User', email: 'test@example.com', createdAt: new Date() };
-    jest.spyOn(service, 'findOne').mockResolvedValue(mockUser); // Mock del método findOne
+    const mockUser = {
+      user_id: id,
+      role_id: 1,
+      username: 'testuser',
+      password_hash: 'hashedpassword',
+      email: 'test@example.com',
+      registration_date: new Date(),
+      last_login: null,
+      active: true,
+    };
+    jest.spyOn(service, 'findOne').mockResolvedValue(mockUser as any);
 
     const result = await service.findOne(id);
     expect(result).toEqual(mockUser);
