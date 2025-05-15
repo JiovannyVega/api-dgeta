@@ -2,10 +2,10 @@ import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 
 @Entity({ tableName: 'roles' })
 export class Role {
-    @PrimaryKey({ name: 'role_id' })
+    @PrimaryKey()
     role_id?: number;
 
-    @Property({ name: 'role_name' })
+    @Property()
     role_name!: string;
 
     @Property({ nullable: true })

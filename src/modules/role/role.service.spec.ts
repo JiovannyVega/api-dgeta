@@ -1,11 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RoleService } from './role.service';
-import { EntityManager } from '@mikro-orm/core'; // <-- Correct import
+import { EntityManager } from '@mikro-orm/core';
 
 describe('RoleService', () => {
   let service: RoleService;
 
-  // Mock classes
   const mockRoleRepository = {};
   const mockEntityManager = {};
 
@@ -14,7 +13,7 @@ describe('RoleService', () => {
       providers: [
         RoleService,
         { provide: 'RoleRepository', useValue: mockRoleRepository },
-        { provide: EntityManager, useValue: mockEntityManager }, // Use class, not string
+        { provide: EntityManager, useValue: mockEntityManager },
       ],
     }).compile();
 

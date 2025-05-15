@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, EntityManager } from '@mikro-orm/core';
 import { CreateRoleDto } from './dto/create-role.dto';
-import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 
 @Injectable()
@@ -25,14 +24,6 @@ export class RoleService {
 
   async findOne(id: number): Promise<Role | null> {
     return this.roleRepository.findOne({ role_id: id }) || null;
-  }
-
-  async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role | null> {
-    const role = await this.findOne(id);
-    if (!role) return null;
-    this.roleRepository.assign(role, updateRoleDto);
-    await this.em.flush();
-    return role;
   }
 
   async remove(id: number): Promise<boolean> {
