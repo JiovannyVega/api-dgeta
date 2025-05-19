@@ -9,15 +9,3 @@ export class SuccessResponse<T> {
         this.data = data;
     }
 }
-
-export class ErrorResponse {
-    success: boolean;
-    message: string;
-    error: any;
-
-    constructor(message: string, error: any) {
-        this.success = false;
-        this.message = message;
-        this.error = error;
-    }
-}

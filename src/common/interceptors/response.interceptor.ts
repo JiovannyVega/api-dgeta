@@ -4,10 +4,10 @@ import {
     Injectable,
     NestInterceptor,
     HttpException,
+    BadRequestException,
 } from '@nestjs/common';
 import { map, catchError } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { ErrorResponse } from '../responses/response.class';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
@@ -20,18 +20,26 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
             })),
             catchError((error) => {
                 if (error instanceof HttpException) {
-                    const response = new ErrorResponse(error.message, error.getResponse());
-                    return new Observable((observer) => {
-                        observer.next(response); // Devolver la respuesta estructurada
-                        observer.complete();
-                    });
+                    return throwError(() => error);
                 }
-                console.error('Unhandled error:', error); // Registrar el error en la consola
-                const response = new ErrorResponse('Internal server error', error.message);
-                return new Observable((observer) => {
-                    observer.next(response); // Devolver la respuesta estructurada
-                    observer.complete();
-                });
+                // Detecta errores de unicidad de MikroORM
+                if (
+                    error.name === 'UniqueConstraintViolationException' ||
+                    error.code === 'ER_DUP_ENTRY' ||
+                    error.message?.includes('duplicate') ||
+                    error.message?.includes('UNIQUE')
+                ) {
+                    return throwError(() => new BadRequestException('Ya existe un registro con ese valor único.'));
+                }
+                if (
+                    error.message?.includes('Data too long') ||
+                    error.message?.includes('value too long') ||
+                    error.message?.includes('violates')
+                ) {
+                    return throwError(() => new BadRequestException(error.message));
+                }
+                console.error('Unhandled error:', error);
+                return throwError(() => new BadRequestException(error.message || 'Internal server error'));
             }),
         );
     }
