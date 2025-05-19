@@ -19,12 +19,16 @@ export class PersonalInformationController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.personalInformationService.findOne(+id);
+    const info = await this.personalInformationService.findOne(+id);
+    if (!info) throw new NotFoundException(`PersonalInformation #${id} not found`);
+    return info;
   }
 
   @Get('user/:user_id')
   async findByUserId(@Param('user_id') user_id: string) {
-    return this.personalInformationService.findByUserId(+user_id);
+    const info = await this.personalInformationService.findByUserId(+user_id);
+    if (!info) throw new NotFoundException(`PersonalInformation for User ID #${user_id} not found`);
+    return info;
   }
 
   @Patch(':id')
