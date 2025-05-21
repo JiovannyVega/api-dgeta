@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SpecialitieService } from './specialitie.service';
+import { SpecialityService } from './specialty.service';
 import { EntityManager } from '@mikro-orm/core';
 import { getRepositoryToken } from '@mikro-orm/nestjs';
+import { Specialty } from './entities/specialty.entity';
 
 const mockSpecialitie = {
   specialty_id: 1,
@@ -25,18 +26,18 @@ const mockEm = {
 };
 
 describe('SpecialitieService', () => {
-  let service: SpecialitieService;
+  let service: SpecialityService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        SpecialitieService,
-        { provide: getRepositoryToken('Specialitie'), useValue: mockSpecialitieRepo },
+        SpecialityService,
+        { provide: getRepositoryToken(Specialty), useValue: mockSpecialitieRepo }, // <-- Use entity class
         { provide: EntityManager, useValue: mockEm },
       ],
     }).compile();
 
-    service = module.get<SpecialitieService>(SpecialitieService);
+    service = module.get<SpecialityService>(SpecialityService);
     jest.clearAllMocks();
   });
 

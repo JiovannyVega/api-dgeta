@@ -4,15 +4,15 @@ import { EntityRepository, EntityManager } from '@mikro-orm/core';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { Group } from './entities/group.entity';
-import { Specialitie } from '../specialitie/entities/specialitie.entity';
+import { Specialty } from '../specialty/entities/specialty.entity';
 
 @Injectable()
 export class GroupService {
   constructor(
     @InjectRepository(Group)
     private readonly groupRepo: EntityRepository<Group>,
-    @InjectRepository(Specialitie)
-    private readonly specialitieRepo: EntityRepository<Specialitie>,
+    @InjectRepository(Specialty)
+    private readonly specialitieRepo: EntityRepository<Specialty>,
     private readonly em: EntityManager,
   ) { }
 

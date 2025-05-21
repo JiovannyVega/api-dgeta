@@ -2,7 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { GroupService } from './group.service';
 import { EntityManager } from '@mikro-orm/core';
 import { getRepositoryToken } from '@mikro-orm/nestjs';
-import { NotFoundException } from '@nestjs/common';
+import { ShiftEnum } from './dto/create-group.dto';
+import { Specialty } from '../specialty/entities/specialty.entity';
 
 const mockGroupRepo = {
   create: jest.fn(),
@@ -12,7 +13,7 @@ const mockGroupRepo = {
   persistAndFlush: jest.fn(),
   removeAndFlush: jest.fn(),
 };
-const mockSpecialitieRepo = {
+const mockSpecialityRepo = {
   findOne: jest.fn(),
 };
 const mockEm = {
@@ -24,7 +25,7 @@ const mockEm = {
 const mockGroup = {
   group_id: 1,
   group_name: '1A',
-  shift: 'Morning',
+  shift: ShiftEnum.Morning,
   semester: 1,
   specialty_id: 2,
   specialty: { specialty_id: 2, specialty_name: 'Informática', specialty_code: 'INF', description: 'Especialidad en informática' },
@@ -38,7 +39,7 @@ describe('GroupService', () => {
       providers: [
         GroupService,
         { provide: getRepositoryToken('Group'), useValue: mockGroupRepo },
-        { provide: getRepositoryToken('Specialitie'), useValue: mockSpecialitieRepo },
+        { provide: getRepositoryToken(Specialty), useValue: mockSpecialityRepo },
         { provide: EntityManager, useValue: mockEm },
       ],
     }).compile();
@@ -54,7 +55,7 @@ describe('GroupService', () => {
   it('should create a group', async () => {
     mockGroupRepo.create.mockReturnValueOnce(mockGroup);
     mockEm.persistAndFlush.mockResolvedValueOnce(undefined);
-    const result = await service.create({ group_name: '1A', shift: 'Morning', semester: 1, specialty_id: 2 });
+    const result = await service.create({ group_name: '1A', shift: ShiftEnum.Morning, semester: 1, specialty_id: 2 });
     expect(result).toEqual(mockGroup);
     expect(mockGroupRepo.create).toHaveBeenCalled();
     expect(mockEm.persistAndFlush).toHaveBeenCalled();
@@ -62,14 +63,14 @@ describe('GroupService', () => {
 
   it('should return all groups with specialty', async () => {
     mockGroupRepo.findAll.mockResolvedValueOnce([mockGroup]);
-    mockSpecialitieRepo.findOne.mockResolvedValueOnce(mockGroup.specialty);
+    mockSpecialityRepo.findOne.mockResolvedValueOnce(mockGroup.specialty);
     const result = await service.findAll();
     expect(result[0].specialty).toEqual(mockGroup.specialty);
   });
 
   it('should return one group with specialty', async () => {
     mockGroupRepo.findOne.mockResolvedValueOnce(mockGroup);
-    mockSpecialitieRepo.findOne.mockResolvedValueOnce(mockGroup.specialty);
+    mockSpecialityRepo.findOne.mockResolvedValueOnce(mockGroup.specialty);
     const result = await service.findOne(1);
     expect(result.specialty).toEqual(mockGroup.specialty);
   });

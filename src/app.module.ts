@@ -8,7 +8,7 @@ import { RoleModule } from './modules/role/role.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PersonalInformationModule } from './modules/personal-information/personal-information.module';
 import { StudentModule } from './modules/student/student.module';
-import { SpecialitieModule } from './modules/specialitie/specialitie.module'
+import { SpecialityModule } from './modules/specialty/specialty.module'
 import { GroupModule } from './modules/group/group.module';
 
 @Module({
@@ -19,7 +19,7 @@ import { GroupModule } from './modules/group/group.module';
     AuthModule,
     PersonalInformationModule,
     StudentModule,
-    SpecialitieModule,
+    SpecialityModule,
     GroupModule,
   ],
   controllers: [AppController],

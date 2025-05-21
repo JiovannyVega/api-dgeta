@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { StudentController } from './student.controller';
 import { StudentService } from './student.service';
 import { NotFoundException } from '@nestjs/common';
+import { StudentStatusEnum } from './dto/create-student.dto';
 
 describe('StudentController', () => {
   let controller: StudentController;
@@ -14,7 +15,7 @@ describe('StudentController', () => {
     control_number: 'A1234567',
     secondary_average: 8.5,
     previous_school: 'Secundaria Técnica 5',
-    status: 'Active' as 'Active',
+    status: StudentStatusEnum.Active,
     user: { user_id: 2, username: 'juanp' },
     group: { group_id: 3, group_name: '1A' },
   };
