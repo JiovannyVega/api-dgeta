@@ -1,4 +1,4 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 
 @Entity({ tableName: 'users' })
 export class User {
@@ -9,12 +9,14 @@ export class User {
     role_id!: number;
 
     @Property()
+    @Unique()
     username!: string;
 
     @Property()
     password_hash!: string;
 
     @Property()
+    @Unique()
     email!: string;
 
     @Property({ onCreate: () => new Date() })

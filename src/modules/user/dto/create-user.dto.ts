@@ -16,10 +16,10 @@ export class CreateUserDto {
     email!: string;
 
     @IsOptional()
-    registration_date?: Date;
+    registration_date?: string;
 
     @IsOptional()
-    last_login?: Date;
+    last_login?: string;
 
     @IsBoolean()
     active!: boolean;

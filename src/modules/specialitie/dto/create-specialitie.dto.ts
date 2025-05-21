@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class CreateSpecialitieDto {
     @IsString()
@@ -7,6 +7,7 @@ export class CreateSpecialitieDto {
     @IsString()
     specialty_code!: string;
 
+    @IsOptional()
     @IsString()
-    description!: string;
+    description?: string;
 }

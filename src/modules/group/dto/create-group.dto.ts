@@ -1,11 +1,17 @@
-import { IsString, IsInt } from 'class-validator';
+import { IsString, IsInt, IsEnum } from 'class-validator';
+
+export enum ShiftEnum {
+    Morning = 'Morning',
+    Evening = 'Evening',
+    Night = 'Night'
+}
 
 export class CreateGroupDto {
     @IsString()
     group_name!: string;
 
-    @IsString()
-    shift!: string;
+    @IsEnum(ShiftEnum)
+    shift!: ShiftEnum;
 
     @IsInt()
     semester!: number;

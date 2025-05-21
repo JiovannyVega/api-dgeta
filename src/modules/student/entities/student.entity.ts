@@ -1,4 +1,5 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { StudentStatusEnum } from '../dto/create-student.dto';
 
 @Entity({ tableName: 'students' })
 export class Student {
@@ -20,6 +21,6 @@ export class Student {
     @Property({ nullable: true })
     previous_school?: string;
 
-    @Property({ default: 'Active' })
-    status: 'Active' | 'Inactive' | 'Graduated' | 'Dropped' = 'Active';
+    @Property({ default: 'Active', type: 'string' })
+    status: StudentStatusEnum = StudentStatusEnum.Active;
 }

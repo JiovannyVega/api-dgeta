@@ -1,4 +1,5 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { GenderEnum } from '../dto/create-personal-information.dto';
 
 @Entity({ tableName: 'personal_information' })
 export class PersonalInformation {
@@ -23,8 +24,8 @@ export class PersonalInformation {
     @Property({ nullable: true })
     birth_date?: Date;
 
-    @Property({ nullable: true })
-    gender?: string;
+    @Property({ nullable: true, type: 'string' })
+    gender?: GenderEnum;
 
     @Property({ nullable: true })
     phone?: string;

@@ -1,4 +1,10 @@
-import { IsInt, IsOptional, IsString, IsDateString } from 'class-validator';
+import { IsInt, IsOptional, IsString, IsDateString, IsEnum } from 'class-validator';
+
+export enum GenderEnum {
+    Male = 'Male',
+    Female = 'Female',
+    Other = 'Other'
+}
 
 export class CreatePersonalInformationDto {
     @IsInt()
@@ -23,8 +29,8 @@ export class CreatePersonalInformationDto {
     birth_date?: string;
 
     @IsOptional()
-    @IsString()
-    gender?: string;
+    @IsEnum(GenderEnum)
+    gender?: GenderEnum;
 
     @IsOptional()
     @IsString()

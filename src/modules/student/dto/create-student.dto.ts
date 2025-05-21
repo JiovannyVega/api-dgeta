@@ -1,5 +1,12 @@
 import { IsInt, IsOptional, IsString, IsNumber, IsEnum } from 'class-validator';
 
+export enum StudentStatusEnum {
+    Active = 'Active',
+    Inactive = 'Inactive',
+    Graduated = 'Graduated',
+    Dropped = 'Dropped'
+}
+
 export class CreateStudentDto {
     @IsInt()
     user_id!: number;
@@ -12,7 +19,7 @@ export class CreateStudentDto {
     control_number!: string;
 
     @IsOptional()
-    @IsNumber()
+    @IsNumber({ maxDecimalPlaces: 1 })
     secondary_average?: number;
 
     @IsOptional()
@@ -20,6 +27,6 @@ export class CreateStudentDto {
     previous_school?: string;
 
     @IsOptional()
-    @IsEnum(['Active', 'Inactive', 'Graduated', 'Dropped'])
-    status?: 'Active' | 'Inactive' | 'Graduated' | 'Dropped';
+    @IsEnum(StudentStatusEnum)
+    status?: StudentStatusEnum;
 }

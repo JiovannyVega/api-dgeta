@@ -1,4 +1,5 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { ShiftEnum } from '../dto/create-group.dto';
 
 @Entity({ tableName: 'groups' })
 export class Group {
@@ -8,8 +9,8 @@ export class Group {
     @Property()
     group_name!: string;
 
-    @Property()
-    shift!: string;
+    @Property({ type: 'string' })
+    shift!: ShiftEnum;
 
     @Property()
     semester!: number;
