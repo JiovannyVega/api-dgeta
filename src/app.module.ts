@@ -12,6 +12,7 @@ import { SpecialityModule } from './modules/specialty/specialty.module'
 import { GroupModule } from './modules/group/group.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { SubjectModule } from './modules/subject/subject.module';
+import { GroupSubjectModule } from './modules/group-subject/group-subject.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SubjectModule } from './modules/subject/subject.module';
     GroupModule,
     TeacherModule,
     SubjectModule,
+    GroupSubjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
