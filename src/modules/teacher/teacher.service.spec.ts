@@ -82,6 +82,19 @@ describe('TeacherService', () => {
     expect(result).toBeNull();
   });
 
+  it('should return teacher by user_id', async () => {
+    const result = await service.findByUserId(2);
+    expect(result.user).toBeDefined();
+    expect(result.user.user_id).toBe(2);
+    expect(result.employee_number).toBe('EMP123');
+  });
+
+  it('should return null if teacher by user_id not found', async () => {
+    mockTeacherRepo.findOne.mockResolvedValueOnce(null);
+    const result = await service.findByUserId(999);
+    expect(result).toBeNull();
+  });
+
   it('should update a teacher', async () => {
     mockEm.flush.mockResolvedValueOnce(undefined);
     const result = await service.update(1, { academic_degree: 'Maestría' } as any);

@@ -57,6 +57,21 @@ export class TeacherService {
     };
   }
 
+  async findByUserId(user_id: number): Promise<any | null> {
+    const teacher = await this.teacherRepo.findOne({ user_id });
+    if (!teacher) return null;
+    let userSafe: any = null;
+    const user = await this.userService.findOne(teacher.user_id);
+    if (user) {
+      const { password_hash, ...rest } = user as any;
+      userSafe = rest;
+    }
+    return {
+      ...teacher,
+      user: userSafe,
+    };
+  }
+
   async update(id: number, updateTeacherDto: UpdateTeacherDto): Promise<Teacher | null> {
     const entity = await this.teacherRepo.findOne({ teacher_id: id });
     if (!entity) return null;

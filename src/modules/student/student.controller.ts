@@ -24,6 +24,13 @@ export class StudentController {
     return student;
   }
 
+  @Get('user/:userId')
+  async findByUserId(@Param('userId') userId: string) {
+    const student = await this.studentService.findByUserId(+userId);
+    if (!student) throw new NotFoundException(`Student with user_id #${userId} not found`);
+    return student;
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
     return this.studentService.update(+id, updateStudentDto);

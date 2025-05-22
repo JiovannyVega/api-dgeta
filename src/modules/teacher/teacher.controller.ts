@@ -24,6 +24,13 @@ export class TeacherController {
     return teacher;
   }
 
+  @Get('user/:userId')
+  async findByUserId(@Param('userId') userId: string) {
+    const teacher = await this.teacherService.findByUserId(+userId);
+    if (!teacher) throw new NotFoundException(`Teacher with user_id #${userId} not found`);
+    return teacher;
+  }
+
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
     const updated = await this.teacherService.update(+id, updateTeacherDto);

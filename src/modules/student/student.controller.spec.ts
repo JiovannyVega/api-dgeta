@@ -32,6 +32,7 @@ describe('StudentController', () => {
             findOne: jest.fn().mockResolvedValue(mockStudent),
             update: jest.fn().mockResolvedValue(mockStudent),
             remove: jest.fn().mockResolvedValue(true),
+            findByUserId: jest.fn().mockResolvedValue(mockStudent),
           },
         },
       ],
@@ -87,5 +88,15 @@ describe('StudentController', () => {
   it('should throw NotFoundException if remove not found', async () => {
     jest.spyOn(service, 'remove').mockResolvedValueOnce(false);
     await expect(controller.remove('999')).resolves.toBe(false);
+  });
+
+  it('should return student by user_id', async () => {
+    const result = await controller.findByUserId('2');
+    expect(result).toEqual(mockStudent);
+  });
+
+  it('should throw NotFoundException if student by user_id not found', async () => {
+    jest.spyOn(service, 'findByUserId').mockResolvedValueOnce(null);
+    await expect(controller.findByUserId('999')).rejects.toThrow(NotFoundException);
   });
 });

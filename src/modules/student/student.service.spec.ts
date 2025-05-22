@@ -110,4 +110,18 @@ describe('StudentService', () => {
     const result = await service.remove(999);
     expect(result).toBe(false);
   });
+
+  it('should return student by user_id', async () => {
+    const result = await service.findByUserId(2);
+    expect(result.user).toBeDefined();
+    expect(result.group).toBeDefined();
+    expect(result.user.user_id).toBe(2);
+    expect(result.group.group_id).toBe(3);
+  });
+
+  it('should return null if student by user_id not found', async () => {
+    mockStudentRepo.findOne.mockResolvedValueOnce(null);
+    const result = await service.findByUserId(999);
+    expect(result).toBeNull();
+  });
 });

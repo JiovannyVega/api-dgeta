@@ -19,6 +19,7 @@ const mockTeacherService = {
   findOne: jest.fn(),
   update: jest.fn(),
   remove: jest.fn(),
+  findByUserId: jest.fn().mockResolvedValue(mockTeacher),
 };
 
 describe('TeacherController', () => {
@@ -62,6 +63,17 @@ describe('TeacherController', () => {
   it('should throw NotFoundException if teacher not found', async () => {
     mockTeacherService.findOne.mockResolvedValueOnce(null);
     await expect(controller.findOne('999')).rejects.toThrow(NotFoundException);
+  });
+
+  it('should return teacher by user_id', async () => {
+    mockTeacherService.findByUserId.mockResolvedValueOnce(mockTeacher);
+    const result = await controller.findByUserId('2');
+    expect(result).toEqual(mockTeacher);
+  });
+
+  it('should throw NotFoundException if teacher by user_id not found', async () => {
+    mockTeacherService.findByUserId.mockResolvedValueOnce(null);
+    await expect(controller.findByUserId('999')).rejects.toThrow(NotFoundException);
   });
 
   it('should update a teacher', async () => {

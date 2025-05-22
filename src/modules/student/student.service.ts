@@ -75,6 +75,29 @@ export class StudentService {
     };
   }
 
+  async findByUserId(user_id: number): Promise<any | null> {
+    const student = await this.studentRepo.findOne({ user_id });
+    if (!student) return null;
+    let userSafe: any = null;
+    const user = await this.userService.findOne(student.user_id);
+    if (user) {
+      const { password_hash, ...rest } = user as any;
+      userSafe = rest;
+    }
+    let groupSafe: any = null;
+    if (student.group_id) {
+      const group = await this.groupService.findOne(student.group_id);
+      if (group) {
+        groupSafe = group;
+      }
+    }
+    return {
+      ...student,
+      user: userSafe,
+      group: groupSafe,
+    };
+  }
+
   async update(id: number, updateDto: UpdateStudentDto): Promise<Student | null> {
     const entity = await this.studentRepo.findOne({ student_id: id });
     if (!entity) return null;
