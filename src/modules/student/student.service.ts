@@ -1,4 +1,4 @@
-import { Injectable, Inject, forwardRef } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, EntityManager } from '@mikro-orm/core';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -14,7 +14,6 @@ export class StudentService {
     private readonly studentRepo: EntityRepository<Student>,
     private readonly em: EntityManager,
     private readonly userService: UserService,
-    @Inject(forwardRef(() => GroupService))
     private readonly groupService: GroupService,
   ) { }
 

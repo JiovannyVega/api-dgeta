@@ -1,17 +1,16 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { StudentService } from './student.service';
 import { StudentController } from './student.controller';
 import { Student } from './entities/student.entity';
 import { UserModule } from '../user/user.module';
-import { Group } from '../group/entities/group.entity';
 import { GroupModule } from '../group/group.module';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Student, Group]),
+    MikroOrmModule.forFeature([Student]),
     UserModule,
-    forwardRef(() => GroupModule),
+    GroupModule,
   ],
   controllers: [StudentController],
   providers: [StudentService],
