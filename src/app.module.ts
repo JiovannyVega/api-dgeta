@@ -10,6 +10,7 @@ import { PersonalInformationModule } from './modules/personal-information/person
 import { StudentModule } from './modules/student/student.module';
 import { SpecialityModule } from './modules/specialty/specialty.module'
 import { GroupModule } from './modules/group/group.module';
+import { TeacherModule } from './modules/teacher/teacher.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { GroupModule } from './modules/group/group.module';
     StudentModule,
     SpecialityModule,
     GroupModule,
+    TeacherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
