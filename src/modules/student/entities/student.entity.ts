@@ -21,6 +21,6 @@ export class Student {
     @Property({ nullable: true })
     previous_school?: string;
 
-    @Property({ default: 'Active', type: 'string' })
+    @Property({ default: StudentStatusEnum.Active, type: 'string' })
     status: StudentStatusEnum = StudentStatusEnum.Active;
 }
