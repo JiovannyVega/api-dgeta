@@ -13,6 +13,7 @@ import { GroupModule } from './modules/group/group.module';
 import { TeacherModule } from './modules/teacher/teacher.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { GroupSubjectModule } from './modules/group-subject/group-subject.module';
+import { GradeModule } from './modules/grade/grade.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { GroupSubjectModule } from './modules/group-subject/group-subject.module
     TeacherModule,
     SubjectModule,
     GroupSubjectModule,
+    GradeModule,
   ],
   controllers: [AppController],
   providers: [AppService],
