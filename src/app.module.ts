@@ -15,6 +15,7 @@ import { SubjectModule } from './modules/subject/subject.module';
 import { GroupSubjectModule } from './modules/group-subject/group-subject.module';
 import { GradeModule } from './modules/grade/grade.module';
 import { FamilyMemberModule } from './modules/family-member/family-member.module';
+import { MessageModule } from './modules/message/message.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { FamilyMemberModule } from './modules/family-member/family-member.module
     GroupSubjectModule,
     GradeModule,
     FamilyMemberModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],
