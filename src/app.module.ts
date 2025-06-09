@@ -17,6 +17,7 @@ import { GradeModule } from './modules/grade/grade.module';
 import { FamilyMemberModule } from './modules/family-member/family-member.module';
 import { MessageModule } from './modules/message/message.module';
 import { QuestionnaireModule } from './modules/questionnaire/questionnaire.module';
+import { QuestionnaireResultModule } from './modules/questionnaire-result/questionnaire-result.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { QuestionnaireModule } from './modules/questionnaire/questionnaire.modul
     FamilyMemberModule,
     MessageModule,
     QuestionnaireModule,
+    QuestionnaireResultModule,
   ],
   controllers: [AppController],
   providers: [AppService],
