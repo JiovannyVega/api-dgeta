@@ -18,6 +18,11 @@ import { FamilyMemberModule } from './modules/family-member/family-member.module
 import { MessageModule } from './modules/message/message.module';
 import { QuestionnaireModule } from './modules/questionnaire/questionnaire.module';
 import { QuestionnaireResultModule } from './modules/questionnaire-result/questionnaire-result.module';
+import { StateModule } from './modules/state/state.module';
+import { MunicipalityModule } from './modules/municipality/municipality.module';
+import { QuestionModule } from './modules/question/question.module';
+import { AnswerModule } from './modules/answer/answer.module';
+import { AttendanceModule } from './modules/attendance/attendance.module';
 
 @Module({
   imports: [
@@ -26,8 +31,7 @@ import { QuestionnaireResultModule } from './modules/questionnaire-result/questi
     RoleModule,
     AuthModule,
     PersonalInformationModule,
-    StudentModule,
-    SpecialityModule,
+    StudentModule, SpecialityModule,
     GroupModule,
     TeacherModule,
     SubjectModule,
@@ -37,6 +41,11 @@ import { QuestionnaireResultModule } from './modules/questionnaire-result/questi
     MessageModule,
     QuestionnaireModule,
     QuestionnaireResultModule,
+    StateModule,
+    MunicipalityModule,
+    QuestionModule,
+    AnswerModule,
+    AttendanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
