@@ -8,6 +8,12 @@ import { DatabaseExceptionFilter } from './common/filters/database-exception.fil
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // Configura CORS: usa CORS_ORIGIN si está definida, sino permite todos los orígenes
+  const corsOrigin = process.env.CORS_ORIGIN;
+  app.enableCors({
+    origin: corsOrigin ? corsOrigin.split(',').map(o => o.trim()) : '*',
+    credentials: true,
+  });
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new DatabaseExceptionFilter());
   app.useGlobalInterceptors(new ResponseInterceptor());
